@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>transtion</title>
+
+	<style type="text/css">
+		div#box{
+			background: blue;
+			width: 400px;
+			height: 300px;
+		}
+
+		button : hover{
+			background: green ;
+					}
+	</style>
+
+	<script type="text/javascript">
+		
+		function changeBG(el,clr){
+			var elem=document.getElementById(el);
+			console.log("we are going to change");
+
+elem.style.transtion = 'background 1.0s linear 0s;';
+		elem.style.background=clr;
+		}
+	</script>
+</head>
+<body>
+	
+
+	<div id="box"> les contenu dans le Box</div>
+	<button onclick="changeBG('box','#F0F')">change</button>
+
+</body>
+</html>

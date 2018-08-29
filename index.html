@@ -1,0 +1,27 @@
+
+
+
+<script type="text/javascript" src="jquery.min.js"></script>
+
+
+
+<div id="loop"> </div>
+
+<style type="text/css">
+	.highlighted{
+		background: red;
+		color: white;
+	}
+</style>
+
+<script type="text/javascript">
+	
+var data=['me','you','us','we']
+
+$.each(data,function(index,element){
+$('<div>'+element+'</div>').click(function(){
+	$(this).toggleClass('highlighted')
+}).appendTo($('#loop'))
+})
+
+</script>
