@@ -4,7 +4,7 @@ var url = "mongodb://localhost:27017/mydb";
 var express=require('express');
 var path=require('path');
 var app=express();
-
+app.use(express.static(__dirname+'/public'));
 var router=express.Router();
 
 //body parser
@@ -27,7 +27,7 @@ mongoose.connect("mongodb://localhost:27017/register");
 
 app.get("/", (req, res) => {
 
-res.send('we r statrting our application');
+    res.sendFile(__dirname+"/index.html");
 
 });
  
@@ -62,7 +62,7 @@ res.sendFile(path.join(__dirname+'/registration.html'));
 });
  
  var dbconn=MongoClient.connect("mongodb://localhost:27017/register");
-
+/*the register work with success
  app.post("/contact",function(req,res){
   dbconn.then(function(db){
   	var dbo = db.db("register");
@@ -75,7 +75,68 @@ res.sendFile(path.join(__dirname+'/registration.html'));
   });
   res.send('/data:'+JSON.stringify(req.body));
 
+ });*/
+
+
+ app.post("/contact",function(req,res){
+  dbconn.then(function(db){
+    var dbo = db.db("register");
+    
+   dbo.collection('folks').findOne({username:req.body.username,email:req.body.email},function(err, user) {
+    if(user) return res.send("username Or email exist");
+
+    dbo.collection('folks').insertOne(req.body,function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    db.close();
+  });
+res.send('/data:'+JSON.stringify(req.body));
+  });
+  })
+
  });
+
+ app.post("/loginn",function(req,res){
+  dbconn.then(function(db){
+    var dbo = db.db("register");
+    dbo.collection('folks').findOne({username:req.body.username,password:req.body.password},function(err, user) {
+    if (!user) { console.log(user);
+      return res.send("check out your username Or password");
+      console.log("No One exist");}
+         else {console.log("we find One");
+         console.log(user);
+    res.sendFile(__dirname+"/success.html");
+       }
+    db.close();
+  });
+
+  });
+
+
+ });
+
+
+
+
+/*app.post('/login',function(req,res){
+var username=req.body.username;
+var password=req.body.password;
+
+User.findOne({username:username,password:password},function(err,user){
+if(err){
+  console.log(err);
+  return res.send("we have a probleme dude");
+}
+
+if(!user){
+  return res.send("check ur loginh or password");
+}
+  return res.send("you do it well");
+
+});
+
+});*/
+
 
 
 app.listen(port, () => {
@@ -90,6 +151,13 @@ else res.render('registration',{User:docs});
 
 });
 });
+
+
+app.get("/login",function(req,res){
+	  res.sendFile(path.join(__dirname+'/login.html'));
+	});
+
+
 /*	var resultArray=[];
 res.send("we are showing data");
 mongodb.connect("",function(err,db){
