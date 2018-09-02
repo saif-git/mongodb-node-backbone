@@ -1,4 +1,5 @@
 
+
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/mydb";
 var express=require('express');
@@ -6,6 +7,8 @@ var path=require('path');
 var app=express();
 app.use(express.static(__dirname+'/public'));
 var router=express.Router();
+//
+//app.use(express.static(__dirname + '/node_modules/bootstrap/dist'));
 
 //body parser
 var bodyParser=require('body-parser');
@@ -31,7 +34,10 @@ app.get("/", (req, res) => {
 
 });
  
+app.get("/backbone",(req,res)=>{
 
+   res.sendFile(__dirname+"/backbone.html");
+});
  //creating our schema for this app
  var nameSchema = new mongoose.Schema({
   username: String,
